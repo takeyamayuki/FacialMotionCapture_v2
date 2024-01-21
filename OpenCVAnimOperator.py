@@ -35,8 +35,8 @@ class OpenCVAnimOperator(bpy.types.Operator):
     # Set paths to trained models downloaded above
     face_detect_path = cv2.data.haarcascades + "haarcascade_frontalface_default.xml"
     #landmark_model_path = "/home/username/Documents/Vincent/lbfmodel.yaml"  #Linux
-    #landmark_model_path = "/Users/username/Downloads/lbfmodel.yaml"         #Mac
-    landmark_model_path = "C:\\Users\\username\\Downloads\\lbfmodel.yaml"    #Windows
+    landmark_model_path = "/Users/yukitakeyama/Documents/research/FacialMotionCapture_v2/GSOC2017-master/data/lbfmodel.yaml"         #Mac
+    # landmark_model_path = "C:\\Users\\username\\Downloads\\lbfmodel.yaml"    #Windows
     
     # Load models
     fm = cv2.face.createFacemarkLBF()
@@ -105,10 +105,15 @@ class OpenCVAnimOperator(bpy.types.Operator):
 
         if event.type == 'TIMER':
             self.init_camera()
-            _, image = self._cap.read()
+            ret, image = self._cap.read()
             #gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
             #gray = cv2.equalizeHist(gray)
-            
+
+            # 画像の読み込みが成功したかを確認
+            if not ret or image is None or image.size == 0:
+                print("カメラから有効な画像を読み込めませんでした．")
+                return {'PASS_THROUGH'}
+
             # find faces
             faces = self.cas.detectMultiScale(image, 
                 scaleFactor=1.05,  
@@ -193,7 +198,7 @@ class OpenCVAnimOperator(bpy.types.Operator):
                     
                     # draw face markers
                     for (x, y) in shape:
-                        cv2.circle(image, (x, y), 2, (0, 255, 255), -1)
+                        cv2.circle(image, (int(x), int(y)), 2, (0, 255, 255), -1)
             
             # draw detected face
             for (x,y,w,h) in faces:
@@ -207,7 +212,7 @@ class OpenCVAnimOperator(bpy.types.Operator):
     
     def init_camera(self):
         if self._cap == None:
-            self._cap = cv2.VideoCapture(0)
+            self._cap = cv2.VideoCapture(1)
             self._cap.set(cv2.CAP_PROP_FRAME_WIDTH, self.width)
             self._cap.set(cv2.CAP_PROP_FRAME_HEIGHT, self.height)
             self._cap.set(cv2.CAP_PROP_BUFFERSIZE, 1)

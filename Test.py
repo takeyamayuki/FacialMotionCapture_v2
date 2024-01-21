@@ -4,7 +4,7 @@ import time
 
 # OpenCV Facial Capture Test 
 
-_cap = cv.VideoCapture(0)
+_cap = cv.VideoCapture(1)
 _cap.set(cv.CAP_PROP_FRAME_WIDTH, 512)
 _cap.set(cv.CAP_PROP_FRAME_HEIGHT, 512)
 _cap.set(cv.CAP_PROP_BUFFERSIZE, 1)
@@ -15,7 +15,7 @@ try:
     # Download the trained model lbfmodel.yaml:
     # https://github.com/kurnianggoro/GSOC2017/tree/master/data
     # and update this path to the file:
-    facemark.loadModel("/home/jason/Documents/Vincent/lbfmodel.yaml")
+    facemark.loadModel("GSOC2017-master/data/lbfmodel.yaml")
 except cv.error:
     print("Model not found")
 

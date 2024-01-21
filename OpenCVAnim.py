@@ -6,7 +6,7 @@ class OBJECT_MT_OpenCVPanel(bpy.types.WorkSpaceTool):
     bl_space_type = 'VIEW_3D'
     bl_context_mode='OBJECT'
     bl_idname = "ui_plus.opencv"
-    bl_options = {'REGISTER'}
+    # bl_options = {'REGISTER'}
     bl_icon = "ops.generic.select_circle"
         
     def draw_settings(context, layout, tool):
